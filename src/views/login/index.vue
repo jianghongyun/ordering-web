@@ -16,12 +16,14 @@
     </el-form>
   </div>
 </template>
+
 <script>
 // import { login } from '@/api/login'
 import qs from "qs"
 import axios from '@/router/axios'
 import router from '@/router/index'
 import { setToken } from '@/utils/token'
+
 export default {
   data () {
     return {
@@ -47,7 +49,8 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('/api/user/login',this.form).then(function (response) {
+          axios.post('/api/user/login',this.form)
+          .then(function (response) {
             if (response.data.code === 0) {
               setToken(response.data.token)
               router.push({ path: '/index' })
@@ -57,7 +60,8 @@ export default {
                 type: 'warning'
               });
             } 
-          }).catch(function (error) {
+          })
+          .catch(function (error) {
             this.$message.error('登陆失败');
           })
         } else {
@@ -68,3 +72,4 @@ export default {
   }
 }
 </script>
+
