@@ -123,6 +123,7 @@
 <script>
 import axios from "@/router/axios";
 import { getToken } from "@/utils/token";
+import { baseUrl } from '@/utils/baseUrl'
 export default {
   data() {
     return {
@@ -186,7 +187,7 @@ export default {
         }
       }
       axios
-        .get("/api/admin/order/list", { params: this.listQuery })
+        .get(baseUrl()+"admin/order/list", { params: this.listQuery })
         .then(res => {
           if (res.data.code === 0) {
             this.list = res.data.data.rows;
@@ -215,7 +216,7 @@ export default {
      */
     getDetail(id){
         axios
-        .get("/api/admin/order/detail", { params: {id: id} })
+        .get(baseUrl()+"admin/order/detail", { params: {id: id} })
         .then(res => {
           if (res.data.code === 0) {
             this.orderList = res.data.result.list;
@@ -282,7 +283,7 @@ export default {
         type: "warning"
       }).then(() => {
         axios
-          .get("/api/admin/order/delete", { params: { id: row.id } })
+          .get(baseUrl()+"admin/order/delete", { params: { id: row.id } })
           .then(response => {
             this.getList();
             this.$notify({
@@ -307,7 +308,7 @@ export default {
      * 打印订单
      */
     handlePrint: function(id){
-       axios.get('/api/admin/order/update', { params: {id: id} })
+       axios.get(baseUrl()+'admin/order/update', { params: {id: id} })
        .then(res => {
          if(res.data.code == 0) {
            this.getList()

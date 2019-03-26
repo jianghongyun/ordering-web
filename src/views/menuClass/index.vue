@@ -54,6 +54,7 @@
 </template>
 <script>
 import axios from "@/router/axios";
+import { baseUrl } from '@/utils/baseUrl'
 export default {
   data() {
     return {
@@ -94,7 +95,7 @@ export default {
     getList() {
       this.listLoading = true;
       axios
-        .get("/api/admin/menuClass/list", { params: this.listQuery })
+        .get(baseUrl()+"admin/menuClass/list", { params: this.listQuery })
         .then(res => {
           if (res.data.code === 0) {
             this.list = res.data.data.rows;
@@ -158,7 +159,7 @@ export default {
         type: "warning"
       }).then(() => {
         axios
-          .get("/api/admin/menuClass/delete", { params: { id: row.id } })
+          .get(baseUrl()+"admin/menuClass/delete", { params: { id: row.id } })
           .then(response => {
             this.getList();
             this.$notify({
@@ -195,7 +196,7 @@ export default {
       set[formName].validate(valid => {
         if (valid) {
           axios
-            .post("/api/admin/menuClass/add", this.form)
+            .post(baseUrl()+"admin/menuClass/add", this.form)
             .then(res => {
               if (res.data.code === 0) {
                 this.dialogFormVisible = false;
@@ -237,7 +238,7 @@ export default {
         if (valid) {
           this.dialogFormVisible = false;
           axios
-            .put("/api/admin/menuClass/update", this.form)
+            .put(baseUrl()+"admin/menuClass/update", this.form)
             .then(res => {
               if (res.data.code === 0) {
                 this.dialogFormVisible = false;

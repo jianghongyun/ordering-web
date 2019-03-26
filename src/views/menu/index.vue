@@ -101,7 +101,7 @@
         <el-form-item label="菜单图片" prop="menuImg">
           <el-upload
             class="avatar-uploader"
-            action="http://192.168.16.191:3000/admin/menu/uploadImg"
+            :action="uploadUrl"
             :headers="headers"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -133,10 +133,12 @@
 <script>
 import axios from '@/router/axios'
 import { getToken } from '@/utils/token'
+import { baseUrl } from '@/utils/baseUrl'
 export default {
   data () {
     return {
       tableName: 'menuTable',
+      uploadUrl: '',  //上传图片接口地址
       tableKey: 0,
       list: null,
       total: null,
@@ -205,6 +207,7 @@ export default {
     }
   },
   created() {
+    this.uploadUrl = baseUrl() + 'admin/menu/uploadImg'
     this.getList()
     this.getMenuClass()
     const Authorization = getToken()
@@ -221,7 +224,7 @@ export default {
           delete this.listQuery[key]
         }
       }
-      axios.get('/api/admin/menu/list', { params: this.listQuery }).then(res => {
+      axios.get(baseUrl()+'admin/menu/list', { params: this.listQuery }).then(res => {
         if(res.data.code === 0) {
           this.list = res.data.data.rows
           this.total = res.data.data.count
@@ -253,7 +256,7 @@ export default {
      * 获取菜单分类列表
      */
     getMenuClass(){
-      axios.get('/api/admin/menuClass/alllist').then(res => {
+      axios.get(baseUrl()+'admin/menuClass/alllist').then(res => {
         if(res.data.code === 0) {
           this.menuClass = res.data.data
         }
@@ -318,7 +321,7 @@ export default {
         type: "warning"
         }
       ).then(() => {
-        axios.get('/api/admin/menu/delete',{params:{id:row.id}})
+        axios.get(baseUrl()+'admin/menu/delete',{params:{id:row.id}})
         .then(response => {
             this.getList();
             this.$notify({
@@ -356,7 +359,7 @@ export default {
       const set = this.$refs;
       set[formName].validate(valid => {
         if (valid) {
-          axios.post('/api/admin/menu/add', this.form).then(res => {
+          axios.post(baseUrl()+'admin/menu/add', this.form).then(res => {
             if (res.data.code === 0) {
               this.dialogFormVisible = false;
               this.getList();
@@ -396,7 +399,7 @@ export default {
       set[formName].validate(valid => {
         if (valid) {
           this.dialogFormVisible = false;
-          axios.put('/api/admin/menu/update', this.form).then(res => {
+          axios.put(baseUrl()+'admin/menu/update', this.form).then(res => {
             if(res.data.code === 0) {
               this.dialogFormVisible = false;
               this.getList();

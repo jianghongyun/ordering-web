@@ -23,6 +23,7 @@ import qs from "qs"
 import axios from '@/router/axios'
 import router from '@/router/index'
 import { setToken } from '@/utils/token'
+import { baseUrl } from '@/utils/baseUrl'
 
 export default {
   data () {
@@ -49,8 +50,8 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('/api/user/login',this.form)
-          .then(function (response) {
+          axios.post(baseUrl()+'user/login',this.form)
+          .then( (response) => {
             if (response.data.code === 0) {
               setToken(response.data.token)
               router.push({ path: '/index' })
@@ -61,7 +62,7 @@ export default {
               });
             } 
           })
-          .catch(function (error) {
+          .catch( (error) => {
             this.$message.error('登陆失败');
           })
         } else {

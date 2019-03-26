@@ -3,7 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-var baseUrl = 'http://192.168.16.191:3000/'
+var baseUrl = 'http://192.168.16.220:3000/'
 module.exports = {
   dev: {
 
@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '192.168.16.191', // can be overwritten by process.env.HOST
+    host: '192.168.16.220', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -46,10 +46,11 @@ module.exports = {
         target:baseUrl, // 设置代理目标
         changeOrigin: true,
         pathRewrite: {  // 重写路径
-          '^/api': '/'
+          '^/api': ''
         }
       }
-    }
+      
+    },
   },
 
   build: {
@@ -80,6 +81,6 @@ module.exports = {
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
-    bundleAnalyzerReport: process.env.npm_config_report
+    bundleAnalyzerReport: process.env.npm_config_report,
   },
 }
