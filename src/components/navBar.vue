@@ -23,7 +23,7 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="/index">订单</el-menu-item>
-          <el-menu-item index="/login">登陆</el-menu-item>
+          <!-- <el-menu-item index="/login">登陆</el-menu-item> -->
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2">
@@ -36,15 +36,27 @@
           <el-menu-item index="/menulist">菜单列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span>营业收入</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/grossIncome">总收入</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </el-col>
 </el-row>
   </div>
-  <div class="header">后台管理系统</div>
+  <div class="header">
+    <div class="logout" @click="logout">退出登陆</div>
+  </div>
   <router-view></router-view>
   </div>
 </template>
 <script>
+import { removeToken } from '@/utils/token'
 export default {
   name: 'navBar',
   data () {
@@ -61,6 +73,15 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    },
+    /**
+     * 退出登陆
+     */
+    logout: function() {
+      removeToken()
+      this.$router.push({
+        path: '/login'
+      })
     }
   }
 }

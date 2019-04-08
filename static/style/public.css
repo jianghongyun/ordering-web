@@ -17,6 +17,14 @@ body {
   float: left;
 }
 
+.logout {
+  width: 150px;
+  float: right;
+  text-align: center;
+  font-size: 15px;
+  cursor: pointer;
+}
+
 .header {
   width: calc(100vw - 230px);
   height: 60px;
@@ -60,7 +68,7 @@ body {
   margin-top: -200px;
   box-shadow: 2px 2px 2px #eee;
   background: #ffffff;
-  padding: 70px 20px;
+  padding: 50px 20px;
   box-sizing: border-box;
 }
 

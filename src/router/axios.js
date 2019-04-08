@@ -14,14 +14,16 @@ import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/token'
 
 // 超时时间
-axios.defaults.timeout = 30000
+axios.defaults.timeout = 300000
 // 跨域请求，允许保存cookie
 axios.defaults.withCredentials = true
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 // HTTPrequest拦截
 axios.interceptors.request.use(config => {
   NProgress.start() // start progress bar
-  if (config.url !== '/api/user/login') {
+  if (config.url == '/api/user/login' || config.url == '/api/admin/sms') {
+    
+  } else {
     if (!!getToken()) {
       config.headers['Authorization'] = getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
     } else {

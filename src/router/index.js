@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/views/index/index'
+import Index from '@/views/index'
 import navBar from '@/components/navBar.vue'
-import Login from '@/views/login/index'
-import menuClass from '@/views/menuClass/index'
-import menu from '@/views/menu/index'
-import order from '@/views/order/index'
+import Login from '@/views/login'
+import menuClass from '@/views/menuClass'
+import menu from '@/views/menu'
+import order from '@/views/order'
+import grossIncome from '@/views/grossIncome'
 import { getToken } from '@/utils/token'
 const jwt = require('jsonwebtoken')
 Vue.use(Router)
@@ -19,7 +20,8 @@ const router = new Router({
       children: [
         { path: 'index', component: order, name: '订单', meta: {requireAuth: true} },
         { path: 'menuClass', component: menuClass, name: '菜单分类', meta: {requireAuth: true} },
-        { path: 'menulist', component: menu, name: '菜单列表', meta: {requireAuth: true} }
+        { path: 'menulist', component: menu, name: '菜单列表', meta: {requireAuth: true} },
+        { path: 'grossIncome', component: grossIncome, name: '总收入', meta: {requireAuth: true} }
       ],
       meta: {requireAuth: true},
       redirect:'/index'
