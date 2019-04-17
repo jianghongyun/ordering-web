@@ -114,14 +114,14 @@ export default {
         alert('请填写正确的手机号')
         return
       }
-      if(this.code != this.resCode) {
-        alert('验证码不正确')
-        return
-      }
-      if(this.form.username != this.submitPhone) {
-        alert('请输入收到验证码的手机号')
-        return
-      }
+      // if(this.code != this.resCode) {
+      //   alert('验证码不正确')
+      //   return
+      // }
+      // if(this.form.username != this.submitPhone) {
+      //   alert('请输入收到验证码的手机号')
+      //   return
+      // }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           axios.post(baseUrl()+'user/login',this.form)

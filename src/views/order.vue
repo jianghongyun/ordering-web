@@ -52,7 +52,7 @@
                 <span>{{ scope.row.remark }}</span>
             </template>
         </el-table-column>  
-
+        <!-- status: 0未打印  1已打印 -->
         <el-table-column align="center" label="备注">
             <template slot-scope="scope">
                 <span v-if="scope.row.status == 0">未打印</span>
@@ -62,15 +62,15 @@
                 
         <el-table-column align="center" label="操作" width="250">
             <template slot-scope="scope">
-                <el-button v-if="scope.row.status == 0" size="small" type="primary"
-                          @click="handlePrint(scope.row.id)">打印订单
+                <el-button v-if="scope.row.status == 0" size="small" type="success"
+                          @click="handleUpdate(scope.row)">打印订单
                 </el-button>
                 <el-button v-else size="small" type="info"
-                          @click="handlePrinted(scope.row.id)">打印订单
+                          @click="handleUpdate(scope.row)">打印订单
                 </el-button>
-                <el-button size="small" type="success"
+                <!-- <el-button size="small" type="success" v-print="'#printTest'"
                           @click="handleUpdate(scope.row)">详情
-                </el-button>
+                </el-button> -->
                 <el-button size="small" type="danger"
                           @click="deleterow(scope.row)">删除
                 </el-button>
@@ -85,37 +85,47 @@
                       layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
       </div>
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      
-      <el-table :data="orderList">
-        <el-table-column  property="menuName" label="菜单名称"></el-table-column>
-        <el-table-column  property="menuNum" label="数量"></el-table-column>
-        <el-table-column  property="price" label="价格"></el-table-column>
-      </el-table>
-      <div class="orderBox">
-        <div class="item">
-          <label for="">订单号</label>
-          {{ order.orderNum }}
+    <!-- 订单详情 -->
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="85mm">
+      <div id="printTest">
+        <h2>CF餐厅欢迎您</h2>
+        <div class="orderNum">桌号:{{ order.tableNum }}</div>
+        <div class="itemBox">
+          <div class="item">
+            <label for="">订单编号</label>
+            {{ order.orderNum }}
+          </div>
+          <div class="item">
+            <label for="">订单时间</label>
+            {{ order.createdAt }}
+          </div>
+          <div class="item">
+            <label for="">订单备注</label>
+            {{ order.remark }}
+          </div>
         </div>
-        <div class="item">
-          <label for="">订单总额</label>
-          {{ order.price }}元
+        
+        <div class="orderTitle">
+          <div class="name">菜品名称</div>
+          <div class="number">数量</div>
+          <div class="price">单价</div>
+          <div class="total">金额</div>
         </div>
-        <div class="item">
-          <label for="">桌号</label>
-          {{ order.tableNum }}
+        <div class="orderDetail">
+          <div v-for="(item, i) in orderList" :key="i" class="orderRow">
+            <div class="name">{{item.menuName}}</div>
+            <div class="number">{{item.menuNum}}</div>
+            <div class="price">{{item.price}}</div>
+            <div class="total">{{item.totalPrice | money}}</div>
+          </div>
         </div>
-        <div class="item">
-          <label for="">订单时间</label>
-          {{ order.createdAt }}
-        </div>
-        <div class="item">
-          <label for="">备注</label>
-          {{ order.remark }}
-        </div>
+        <div class="pay">消费合计：￥{{ order.price | money}}</div>
+        <p class="first">在CF·只为遇见你</p>
+        <p class="second">广西南宁市CF餐厅    欢迎您的光临</p>
       </div>
-      
+      <el-button class="printBtn" type="primary" v-print="'#printTest'" @click="handlePrint(order.id)">打印</el-button>     
     </el-dialog>
+    <!-- 订单详情 -->
     </div>
   </div>
 </template>
@@ -222,7 +232,7 @@ export default {
             this.orderList = res.data.result.list;
             this.order = res.data.result.order;
             this.orderList.map((obj, index, arr) => {
-              obj.price = Number(obj.price) * Number(obj.menuNum)
+              obj.totalPrice = Number(obj.price) * Number(obj.menuNum)
             })
             this.order.createdAt = this.changeTime(this.order.createdAt)
           } else {
@@ -322,12 +332,6 @@ export default {
        });
     },
 
-     /**
-     * 再次打印订单
-     */
-    handlePrinted: function(id){
-      console.log(id)
-    },
 
     /**
      * 获取选择时间范围
@@ -358,6 +362,179 @@ export default {
   },
 
     
+  },
+  filters: {
+    money: function (value) {
+      var toFixedNum = Number(value).toFixed(3);
+      var realVal = toFixedNum.substring(0, toFixedNum.toString().length - 1);
+      return realVal;
+    }
   }
 };
 </script>
+<style scoped>
+#printTest {
+   font-size: 3mm;
+   width: 75mm;
+   background: #ffffff;
+   padding: 2mm;
+   box-sizing: border-box;
+ }
+
+ h2 {
+   text-align: center;
+   font-weight: 400;
+   font-size: 4mm;
+ }
+
+ .orderNum {
+   font-size: 5mm;
+   padding-bottom: 1mm;
+   /* border-bottom: 0.3mm dashed #999999; */
+   margin-bottom: 2mm;
+ }
+
+ .itemBox {
+   margin: 3mm 0;
+ }
+
+ .item {
+   line-height: 7mm;
+ }
+
+ .item label {
+   display: inline-block;
+   width: 18mm;
+ }
+
+  .orderTitle, .orderDetail {
+    border-bottom: 0.3mm dashed #333333;
+  }
+
+ .orderTitle, .orderRow {
+   display: flex;
+   height: 7mm;
+   line-height: 7mm;
+ }
+
+ .name {
+   width: 34mm;
+ }
+
+ .number {
+   width: 9mm;
+ }
+
+ .price {
+   width: 13mm;
+   text-align: center;
+ }
+
+ .total {
+   width: 14mm;
+   text-align: center;
+ }
+
+ .pay {
+   width: 71mm;
+   text-align: right;
+   height: 7mm;
+   line-height: 7mm;
+ }
+
+ p {
+   text-align: center;
+ }
+
+ .first {
+   font-size: 6mm;
+   margin-bottom: 3mm;
+ }
+
+ .printBtn {
+   margin-top: 5mm;
+ }
+
+ 
+
+@media print {
+ #printTest {
+   font-size: 3mm;
+   width: 75mm;
+   background: #ffffff;
+   padding: 2mm;
+   box-sizing: border-box;
+ }
+
+ h2 {
+   text-align: center;
+   font-weight: 400;
+   font-size: 4mm;
+ }
+
+ .orderNum {
+   font-size: 5mm;
+   padding-bottom: 1mm;
+   /* border-bottom: 0.3mm dashed #999999; */
+   margin-bottom: 2mm;
+ }
+
+ .itemBox {
+   margin: 3mm 0;
+ }
+
+ .item {
+   line-height: 7mm;
+ }
+
+ .item label {
+   display: inline-block;
+   width: 18mm;
+ }
+
+  .orderTitle, .orderDetail {
+    border-bottom: 0.3mm dashed #333333;
+  }
+
+ .orderTitle, .orderRow {
+   display: flex;
+   height: 7mm;
+   line-height: 7mm;
+ }
+
+ .name {
+   width: 34mm;
+ }
+
+ .number {
+   width: 9mm;
+ }
+
+ .price {
+   width: 13mm;
+   text-align: center;
+ }
+
+ .total {
+   width: 14mm;
+   text-align: center;
+ }
+
+ .pay {
+   width: 71mm;
+   text-align: right;
+   height: 7mm;
+   line-height: 7mm;
+ }
+
+ p {
+   text-align: center;
+ }
+
+ .first {
+   font-size: 6mm;
+   margin-bottom: 3mm;
+ }
+}
+</style>
+

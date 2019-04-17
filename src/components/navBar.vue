@@ -56,33 +56,33 @@
   </div>
 </template>
 <script>
-import { removeToken } from '@/utils/token'
+import { removeToken } from "@/utils/token";
 export default {
-  name: 'navBar',
-  data () {
+  name: "navBar",
+  data() {
     return {
       routeNav: {
-        index: '/index',
-        login: '/login'
-      }
-    }
+        index: "/index",
+        login: "/login"
+      },   
+    };
   },
   methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
     },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
     },
     /**
      * 退出登陆
      */
     logout: function() {
-      removeToken()
+      removeToken();
       this.$router.push({
-        path: '/login'
-      })
+        path: "/login"
+      });
     }
   }
-}
+};
 </script>

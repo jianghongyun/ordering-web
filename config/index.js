@@ -3,7 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-var baseUrl = 'http://192.168.16.220:3000/'
+var baseUrl = 'http://192.168.16.246:3000/'
 module.exports = {
   dev: {
 
@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '192.168.16.220', // can be overwritten by process.env.HOST
+    host: '192.168.16.246', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

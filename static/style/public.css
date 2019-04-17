@@ -104,19 +104,3 @@ body {
   height: 178px;
   display: block;
 }
-
-.orderBox {
-  margin: 20px 0;
-}
-
-.orderBox .item {
-   height: 40px;
-   line-height: 40px;
-   color: #666;
-}
-
-.orderBox .item label {
-  width: 80px;
-  color: #333;
-  display: inline-block;
-}
